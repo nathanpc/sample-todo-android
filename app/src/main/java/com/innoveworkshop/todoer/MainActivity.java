@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.innoveworkshop.todoer.adapters.TodoItemRowAdapter;
 import com.innoveworkshop.todoer.models.TodoItem;
@@ -61,6 +62,16 @@ public class MainActivity extends AppCompatActivity {
 
         // Set up row adapter with our items list.
         itemRowAdapter = new TodoItemRowAdapter(this, itemsList);
+        itemRowAdapter.setOnClickListener(new TodoItemRowAdapter.ItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                // Place our clicked item object in the intent to send to the other activity.
+                Intent intent = new Intent(MainActivity.this, ItemEditorActivity.class);
+                intent.putExtra("item", itemsList.get(position));
+
+                startActivity(intent);
+            }
+        });
 
         // Set up the items recycler view.
         itemsListView = (RecyclerView) findViewById(R.id.todo_list);
