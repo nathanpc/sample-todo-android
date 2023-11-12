@@ -1,9 +1,13 @@
 <resources>
     <string name="app_name">Todoer</string>
 
+    <!-- Main Activity -->
+    <string name="new_item_menu">New Task</string>
+
     <!-- Edit Item Activity -->
     <string name="edit_todo_item">Edit a Todo Item</string>
     <string name="title_hint">Write a title here</string>
     <string name="notes_label">Notes</string>
     <string name="notes_hint">Write a descriptive note here...</string>
+    <string name="save_item_menu">Save Task</string>
 </resources>
