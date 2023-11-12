@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.innoveworkshop.todoer.adapters.TodoItemRowAdapter;
 import com.innoveworkshop.todoer.models.TodoItem;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import java.util.GregorianCalendar;
 
 public class MainActivity extends AppCompatActivity {
     protected RecyclerView itemsListView;
+    protected TodoItemRowAdapter itemRowAdapter;
 
     protected ArrayList<TodoItem> itemsList;
 
@@ -57,8 +59,12 @@ public class MainActivity extends AppCompatActivity {
         // Setup the ActionBar.
         setSupportActionBar(findViewById(R.id.toolbar));
 
+        // Set up row adapter with our items list.
+        itemRowAdapter = new TodoItemRowAdapter(this, itemsList);
+
         // Set up the items recycler view.
         itemsListView = (RecyclerView) findViewById(R.id.todo_list);
         itemsListView.setLayoutManager(new LinearLayoutManager(this));
+        itemsListView.setAdapter(itemRowAdapter);
     }
 }
