@@ -83,19 +83,29 @@ public class TodoItemRowAdapter extends RecyclerView.Adapter<TodoItemRowAdapter.
         public TextView notesLabel;
         public CheckBox doneCheck;
 
+        /**
+         * Sets up the view that was inflated.
+         *
+         * @param itemView Layout view that was inflated.
+         */
         public ViewHolder(View itemView) {
             super(itemView);
 
-            // Get the components.
+            // Get the components in the view.
             titleLabel = itemView.findViewById(R.id.title_label);
             notesLabel = itemView.findViewById(R.id.notes_label);
             doneCheck = itemView.findViewById(R.id.done_check);
 
+            // Set what happens when the view gets clicked.
             itemView.setOnClickListener(this);
         }
 
+        /**
+         * Handles the onclick event of the view.
+         */
         @Override
         public void onClick(View view) {
+            // Pass the event to our custom listener in the activity.
             if (clickListener != null) {
                 clickListener.onItemClick(view, getAdapterPosition());
             }

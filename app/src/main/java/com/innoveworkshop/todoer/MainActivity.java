@@ -26,6 +26,9 @@ public class MainActivity extends AppCompatActivity {
 
     protected ArrayList<TodoItem> itemsList;
 
+    /**
+     * Called when the activity is first started.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,12 +40,24 @@ public class MainActivity extends AppCompatActivity {
         setupComponents();
     }
 
+    /**
+     * Adds our menu items to the ActionBar.
+     *
+     * @param menu Menu object from the system that will hold our menu items.
+     */
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return super.onPrepareOptionsMenu(menu);
     }
 
+    /**
+     * Event handler when menu items are selected.
+     *
+     * @param item Menu item that was selected.
+     *
+     * @return True if we handled the event, False if Android should take care of it.
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_new_item) {
@@ -59,12 +74,23 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Gets the result back from another acitivity.
+     *
+     * @param requestCode Code sent with the {@link #startActivityForResult(Intent, int)}
+     * @param resultCode  Code that was returned from the other activity (usually a flag of success).
+     * @param data        Data sent back from the other activity in the form of an Intent.
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        // Must be called always and before everything.
         super.onActivityResult(requestCode, resultCode, data);
 
+        // Check which activity returned to us.
         if (requestCode == EDITOR_ACTIVITY_RETURN_ID) {
+            // Check if the activity was successful.
             if (resultCode == AppCompatActivity.RESULT_OK) {
+                // Get extras returned to us.
                 int position = data.getIntExtra("position", -1);
                 TodoItem updatedItem = (TodoItem) data.getSerializableExtra("item");
 
@@ -81,6 +107,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Sets up the components and event handlers in the activity.
+     */
     private void setupComponents() {
         // Setup the ActionBar.
         setSupportActionBar(findViewById(R.id.toolbar));

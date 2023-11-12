@@ -25,6 +25,10 @@ public class ItemEditorActivity extends AppCompatActivity {
 
     protected int listPosition;
     protected TodoItem item;
+
+    /**
+     * Called when the activity is first started.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,12 +42,24 @@ public class ItemEditorActivity extends AppCompatActivity {
         setupComponents();
     }
 
+    /**
+     * Adds our menu items to the ActionBar.
+     *
+     * @param menu Menu object from the system that will hold our menu items.
+     */
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_item_editor, menu);
         return super.onPrepareOptionsMenu(menu);
     }
 
+    /**
+     * Event handler when menu items are selected.
+     *
+     * @param item Menu item that was selected.
+     *
+     * @return True if we handled the event, False if Android should take care of it.
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_save_item) {
@@ -64,6 +80,9 @@ public class ItemEditorActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Sets up the components and event handlers in the activity.
+     */
     private void setupComponents() {
         // Setup the ActionBar.
         setSupportActionBar(findViewById(R.id.toolbar));
@@ -78,6 +97,10 @@ public class ItemEditorActivity extends AppCompatActivity {
         populateView();
     }
 
+    /**
+     * Updates the contents of the components in the activity according to the object associated
+     * with this class.
+     */
     protected void populateView() {
         titleEdit.setText(item.getTitle());
         doneCheck.setChecked(item.isDone());
@@ -85,6 +108,9 @@ public class ItemEditorActivity extends AppCompatActivity {
         notesEdit.setText(item.getNotes());
     }
 
+    /**
+     * Updates the data in the associated object with the information from the UI components.
+     */
     protected void commitView() {
         item.setTitle(titleEdit.getText().toString());
         item.setDone(doneCheck.isChecked());
