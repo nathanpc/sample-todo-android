@@ -2,6 +2,8 @@ package com.innoveworkshop.todoer;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,14 +12,21 @@ import android.view.MenuItem;
 
 import com.innoveworkshop.todoer.models.TodoItem;
 
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
 public class MainActivity extends AppCompatActivity {
+    protected RecyclerView itemsListView;
+
+    protected ArrayList<TodoItem> itemsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Get the items from the web server.
+        itemsList = TodoItem.List();
 
         setupComponents();
     }
@@ -47,5 +56,9 @@ public class MainActivity extends AppCompatActivity {
     private void setupComponents() {
         // Setup the ActionBar.
         setSupportActionBar(findViewById(R.id.toolbar));
+
+        // Set up the items recycler view.
+        itemsListView = (RecyclerView) findViewById(R.id.todo_list);
+        itemsListView.setLayoutManager(new LinearLayoutManager(this));
     }
 }
