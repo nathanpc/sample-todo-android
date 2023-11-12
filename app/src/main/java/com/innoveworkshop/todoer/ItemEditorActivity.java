@@ -13,6 +13,7 @@ import android.widget.EditText;
 
 import com.innoveworkshop.todoer.models.TodoItem;
 
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.function.ToDoubleFunction;
 
@@ -22,6 +23,7 @@ public class ItemEditorActivity extends AppCompatActivity {
     protected CalendarView calendar;
     protected EditText notesEdit;
 
+    protected int listPosition;
     protected TodoItem item;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +32,7 @@ public class ItemEditorActivity extends AppCompatActivity {
 
         // Get the item passed from the previous activity.
         Intent intent = getIntent();
+        listPosition = intent.getIntExtra("position", -1);
         item = (TodoItem) intent.getSerializableExtra("item");
 
         setupComponents();
@@ -45,6 +48,15 @@ public class ItemEditorActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_save_item) {
             // ActionBar "Save" button.
+            commitView();
+            this.item.save();
+
+            // Setup the data to be sent back to the previous activity.
+            Intent returnIntent = new Intent();
+            returnIntent.putExtra("position", this.listPosition);
+            returnIntent.putExtra("item", this.item);
+            setResult(AppCompatActivity.RESULT_OK, returnIntent);
+
             finish();
             return true;
         }
@@ -71,5 +83,15 @@ public class ItemEditorActivity extends AppCompatActivity {
         doneCheck.setChecked(item.isDone());
         calendar.setDate(item.getDate().getTimeInMillis());
         notesEdit.setText(item.getNotes());
+    }
+
+    protected void commitView() {
+        item.setTitle(titleEdit.getText().toString());
+        item.setDone(doneCheck.isChecked());
+        item.setNotes(notesEdit.getText().toString());
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(this.calendar.getDate());
+        item.setDate(calendar);
     }
 }

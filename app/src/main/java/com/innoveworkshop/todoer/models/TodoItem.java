@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Random;
 
 public class TodoItem implements Serializable {
     private int id;
@@ -60,6 +61,22 @@ public class TodoItem implements Serializable {
 
         return new TodoItem(id, false, "Some title from the server", new GregorianCalendar(),
                 "Some description that we also get from the web server");
+    }
+
+    /**
+     * Saves the object information to the database.
+     */
+    public void save() {
+        // TODO: Send the object's data to our web server and update the database there.
+
+        if (id == 0) {
+            // This is a brand new object and must be a INSERT in the database.
+
+            // Simulate doing an insert and getting an ID back from the web server.
+            id = new Random().nextInt(1000) + 1;
+        } else {
+            // This is an update to an existing object and must use UPDATE in the database.
+        }
     }
 
     public int getId() {

@@ -1,6 +1,7 @@
 package com.innoveworkshop.todoer;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,6 +19,8 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
 public class MainActivity extends AppCompatActivity {
+    private static final int EDITOR_ACTIVITY_RETURN_ID = 1;
+
     protected RecyclerView itemsListView;
     protected TodoItemRowAdapter itemRowAdapter;
 
@@ -45,15 +48,37 @@ public class MainActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.action_new_item) {
             // ActionBar "Add" button.
             Intent intent = new Intent(MainActivity.this, ItemEditorActivity.class);
-
+            intent.putExtra("position", -1);
             intent.putExtra("item", new TodoItem());
 
-            startActivity(intent);
+            startActivityForResult(intent, EDITOR_ACTIVITY_RETURN_ID);
 
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == EDITOR_ACTIVITY_RETURN_ID) {
+            if (resultCode == AppCompatActivity.RESULT_OK) {
+                int position = data.getIntExtra("position", -1);
+                TodoItem updatedItem = (TodoItem) data.getSerializableExtra("item");
+
+                if (position == -1) {
+                    // Add the item to the list it was created new.
+                    itemsList.add(updatedItem);
+                    itemRowAdapter.notifyItemInserted(itemsList.size() - 1);
+                } else {
+                    // Updates an existing item on the list.
+                    itemsList.set(position, updatedItem);
+                    itemRowAdapter.notifyItemChanged(position);
+                }
+            }
+        }
     }
 
     private void setupComponents() {
@@ -67,9 +92,10 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(View view, int position) {
                 // Place our clicked item object in the intent to send to the other activity.
                 Intent intent = new Intent(MainActivity.this, ItemEditorActivity.class);
+                intent.putExtra("position", position);
                 intent.putExtra("item", itemsList.get(position));
 
-                startActivity(intent);
+                startActivityForResult(intent, EDITOR_ACTIVITY_RETURN_ID);
             }
         });
 
