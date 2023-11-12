@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Todoer</string>
+
+    <!-- Edit Item Activity -->
+    <string name="edit_todo_item">Edit a Todo Item</string>
+    <string name="title_hint">Write a title here</string>
+    <string name="notes_label">Notes</string>
+    <string name="notes_hint">Write a descriptive note here...</string>
 </resources>
