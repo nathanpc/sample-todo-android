@@ -7,13 +7,27 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.CalendarView;
+import android.widget.CheckBox;
+import android.widget.EditText;
+
+import com.innoveworkshop.todoer.models.TodoItem;
+
+import java.util.GregorianCalendar;
 
 public class ItemEditorActivity extends AppCompatActivity {
+    protected EditText titleEdit;
+    protected CheckBox doneCheck;
+    protected CalendarView calendar;
+    protected EditText notesEdit;
 
+    protected TodoItem item;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_editor);
+
+        item = new TodoItem(1, true, "An interesting title", new GregorianCalendar(), "Some description here");
 
         setupComponents();
     }
@@ -38,5 +52,21 @@ public class ItemEditorActivity extends AppCompatActivity {
     private void setupComponents() {
         // Setup the ActionBar.
         setSupportActionBar(findViewById(R.id.toolbar));
+
+        // Get components into properties.
+        titleEdit = (EditText) findViewById(R.id.title_edit);
+        doneCheck = (CheckBox) findViewById(R.id.done_check);
+        calendar = (CalendarView) findViewById(R.id.calendar);
+        notesEdit = (EditText) findViewById(R.id.notes_edit);
+
+        // Populate the widgets with data from our object.
+        populateView();
+    }
+
+    protected void populateView() {
+        titleEdit.setText(item.getTitle());
+        doneCheck.setChecked(item.isDone());
+        calendar.setDate(item.getDate().getTimeInMillis());
+        notesEdit.setText(item.getNotes());
     }
 }
