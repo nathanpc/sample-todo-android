@@ -8,6 +8,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.innoveworkshop.todoer.models.TodoItem;
+
+import java.util.GregorianCalendar;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -29,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.action_new_item) {
             // ActionBar "Add" button.
             Intent intent = new Intent(MainActivity.this, ItemEditorActivity.class);
+
+            intent.putExtra("item", new TodoItem());
+
             startActivity(intent);
 
             return true;

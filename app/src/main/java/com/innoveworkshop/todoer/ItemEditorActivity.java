@@ -14,6 +14,7 @@ import android.widget.EditText;
 import com.innoveworkshop.todoer.models.TodoItem;
 
 import java.util.GregorianCalendar;
+import java.util.function.ToDoubleFunction;
 
 public class ItemEditorActivity extends AppCompatActivity {
     protected EditText titleEdit;
@@ -27,7 +28,9 @@ public class ItemEditorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_editor);
 
-        item = new TodoItem(1, true, "An interesting title", new GregorianCalendar(), "Some description here");
+        // Get the item passed from the previous activity.
+        Intent intent = getIntent();
+        item = (TodoItem) intent.getSerializableExtra("item");
 
         setupComponents();
     }

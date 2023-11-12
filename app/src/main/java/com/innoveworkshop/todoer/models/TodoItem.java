@@ -1,9 +1,10 @@
 package com.innoveworkshop.todoer.models;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class TodoItem {
+public class TodoItem implements Serializable {
     private int id;
     private boolean done;
     private String title;
