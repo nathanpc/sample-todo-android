@@ -34,9 +34,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Get the items from the web server.
-        itemsList = TodoItem.List();
-
         setupComponents();
     }
 
@@ -114,23 +111,31 @@ public class MainActivity extends AppCompatActivity {
         // Setup the ActionBar.
         setSupportActionBar(findViewById(R.id.toolbar));
 
-        // Set up row adapter with our items list.
-        itemRowAdapter = new TodoItemRowAdapter(this, itemsList);
-        itemRowAdapter.setOnClickListener(new TodoItemRowAdapter.ItemClickListener() {
+        TodoItem.List(new TodoItem.ListResponse() {
             @Override
-            public void onItemClick(View view, int position) {
-                // Place our clicked item object in the intent to send to the other activity.
-                Intent intent = new Intent(MainActivity.this, ItemEditorActivity.class);
-                intent.putExtra("position", position);
-                intent.putExtra("item", itemsList.get(position));
+            public void response(ArrayList<TodoItem> items) {
+                // Set our items list.
+                itemsList = items;
 
-                startActivityForResult(intent, EDITOR_ACTIVITY_RETURN_ID);
+                // Set up row adapter with our items list.
+                itemRowAdapter = new TodoItemRowAdapter(MainActivity.this, itemsList);
+                itemRowAdapter.setOnClickListener(new TodoItemRowAdapter.ItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        // Place our clicked item object in the intent to send to the other activity.
+                        Intent intent = new Intent(MainActivity.this, ItemEditorActivity.class);
+                        intent.putExtra("position", position);
+                        intent.putExtra("item", itemsList.get(position));
+
+                        startActivityForResult(intent, EDITOR_ACTIVITY_RETURN_ID);
+                    }
+                });
+
+                // Set up the items recycler view.
+                itemsListView = (RecyclerView) findViewById(R.id.todo_list);
+                itemsListView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+                itemsListView.setAdapter(itemRowAdapter);
             }
         });
-
-        // Set up the items recycler view.
-        itemsListView = (RecyclerView) findViewById(R.id.todo_list);
-        itemsListView.setLayoutManager(new LinearLayoutManager(this));
-        itemsListView.setAdapter(itemRowAdapter);
     }
 }
